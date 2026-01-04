@@ -399,6 +399,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [mpg123](https://www.mpg123.de/) for reliable MP3 decoding
 - [LÖVE2D](https://love2d.org/) for the excellent 2D game framework
 - [Lua](https://www.lua.org/) for the lightweight scripting language
+- **myster_gaif** for Hyprland/Wallust color theme integration
 - The open-source community for inspiration and support
 
 ## 📞 Support
