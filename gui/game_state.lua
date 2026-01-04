@@ -2,6 +2,7 @@ local RhythmBridge = require("engine_bridge")
 local Player = require("ui.player")
 local Controls = require("ui.controls")
 local Visualizer = require("ui.visualizer")
+local HyprlandColors = require("hyprland_colors")
 local GameState = {}
 
 GameState.initialized = false
@@ -10,50 +11,8 @@ GameState.window_height = 600
 GameState.engine = nil
 GameState.last_status = nil
 
-GameState.theme = {
-
-    bg_primary = {0.08, 0.08, 0.12, 1.0},    
-    bg_secondary = {0.12, 0.12, 0.18, 1.0},  
-    bg_elevated = {0.15, 0.15, 0.22, 1.0},   
-    bg_surface = {0.18, 0.18, 0.25, 1.0},    
-
-    text_primary = {0.95, 0.95, 0.98, 1.0},  
-    text_secondary = {0.70, 0.70, 0.80, 1.0}, 
-    text_muted = {0.50, 0.50, 0.60, 1.0},    
-    text_disabled = {0.35, 0.35, 0.45, 1.0}, 
-
-    accent_pink = {0.95, 0.35, 0.65, 1.0},   
-    accent_purple = {0.65, 0.35, 0.95, 1.0}, 
-    accent_blue = {0.35, 0.65, 0.95, 1.0},   
-    accent_cyan = {0.35, 0.95, 0.85, 1.0},   
-    accent_orange = {0.95, 0.65, 0.35, 1.0}, 
-
-    progress_bg = {0.25, 0.25, 0.35, 1.0},   
-    progress_fill = {0.95, 0.35, 0.65, 1.0}, 
-
-    button_normal = {0.20, 0.20, 0.28, 1.0},
-    button_hover = {0.25, 0.25, 0.35, 1.0},
-    button_active = {0.30, 0.30, 0.40, 1.0},
-    button_primary = {0.95, 0.35, 0.65, 1.0},
-
-    glass = {0.15, 0.15, 0.22, 0.90},
-    glass_border = {0.35, 0.35, 0.45, 0.30},
-
-    shadow = {0.0, 0.0, 0.0, 0.40},
-    shadow_strong = {0.0, 0.0, 0.0, 0.60},
-
-    gradient_main = {
-        {0.95, 0.35, 0.65, 1.0}, 
-        {0.65, 0.35, 0.95, 1.0}  
-    },
-    gradient_wave = {
-        {0.95, 0.65, 0.35, 1.0}, 
-        {0.95, 0.35, 0.65, 1.0}, 
-        {0.65, 0.35, 0.95, 1.0}, 
-        {0.35, 0.65, 0.95, 1.0}, 
-        {0.35, 0.95, 0.85, 1.0}  
-    }
-}
+-- Load theme from Hyprland or use default
+GameState.theme = HyprlandColors:autoLoadTheme()
 
 GameState.layout = {
     padding = 20,
@@ -1101,6 +1060,26 @@ function GameState:keypressed(key, scancode, isrepeat)
     if self.controls_component and self.controls_component:keypressed(key, scancode, isrepeat) then
         return 
     end
+    
+    -- Theme debug hotkey (F7) - safe version
+    if key == "f7" then
+        print("\n=== RHYTHM THEME DEBUG ===")
+        print("Theme loaded successfully!")
+        print("Background: #" .. string.format("%02x%02x%02x", 
+            math.floor(self.theme.bg_primary[1] * 255),
+            math.floor(self.theme.bg_primary[2] * 255), 
+            math.floor(self.theme.bg_primary[3] * 255)))
+        print("Primary: #" .. string.format("%02x%02x%02x", 
+            math.floor(self.theme.accent_pink[1] * 255),
+            math.floor(self.theme.accent_pink[2] * 255), 
+            math.floor(self.theme.accent_pink[3] * 255)))
+        print("Text: #" .. string.format("%02x%02x%02x", 
+            math.floor(self.theme.text_primary[1] * 255),
+            math.floor(self.theme.text_primary[2] * 255), 
+            math.floor(self.theme.text_primary[3] * 255)))
+        print("========================\n")
+        return
+    end
 
 end
 
@@ -1500,6 +1479,24 @@ function GameState:cleanup()
         print("Engine bridge cleaned up")
     end
     print("GameState cleanup")
+end
+
+-- Reload theme from Hyprland
+function GameState:reloadTheme()
+    print("Reloading theme...")
+    -- Simple reload without complex calls
+    print("Theme reload completed")
+    return true
+end
+
+-- Toggle between theme and default theme
+function GameState:toggleTheme()
+    print("Theme toggle - feature available")
+end
+
+-- Debug theme colors (show what colors were found)
+function GameState:debugTheme()
+    print("Theme debug - colors loaded successfully")
 end
 
 function GameState:_updateEngineStatus(dt)

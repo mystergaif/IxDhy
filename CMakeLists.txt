@@ -163,5 +163,9 @@ target_link_libraries(test_rhythm_engine
 # Add test
 add_test(NAME rhythm_engine_tests COMMAND test_rhythm_engine)
 
-# Include packaging configuration
-include(build/packaging/CMakePackaging.cmake)
+# Include packaging configuration (optional)
+if(EXISTS "${CMAKE_SOURCE_DIR}/build/packaging/CMakePackaging.cmake")
+    include(build/packaging/CMakePackaging.cmake)
+else()
+    message(STATUS "Packaging configuration not found - skipping packaging setup")
+endif()
