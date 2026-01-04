@@ -1,6 +1,40 @@
 local GameState = require("game_state")
 
-function love.load()
+function love.load(args)
+    -- Parse command line arguments
+    local music_path = nil
+    
+    -- Check for music directory argument
+    if args and #args > 0 then
+        for i, arg in ipairs(args) do
+            -- Skip LÖVE2D internal arguments
+            if not arg:match("^%-") and arg ~= "." and arg ~= "gui" then
+                music_path = arg
+                print("Music path from command line:", music_path)
+                break
+            end
+        end
+    end
+    
+    -- Set environment variable for GameState to use
+    if music_path then
+        -- Expand relative paths to absolute
+        if not music_path:match("^/") and not music_path:match("^~") then
+            local current_dir = love.filesystem.getWorkingDirectory()
+            music_path = current_dir .. "/" .. music_path
+        end
+        
+        -- Expand ~ to home directory
+        if music_path:match("^~") then
+            local home = os.getenv("HOME") or "/home/" .. (os.getenv("USER") or "user")
+            music_path = music_path:gsub("^~", home)
+        end
+        
+        os.execute("export RHYTHM_MUSIC_PATH='" .. music_path .. "'")
+        -- Also set it directly for this session
+        _G.RHYTHM_MUSIC_PATH = music_path
+        print("Set music path:", music_path)
+    end
 
     love.window.setTitle("Rhythm")
     love.window.setMode(800, 600, {

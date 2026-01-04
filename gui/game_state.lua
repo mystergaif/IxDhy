@@ -86,11 +86,12 @@ function GameState:init()
         self.engine = engine
         print("Engine bridge initialized successfully")
 
-        local music_path = os.getenv("RHYTHM_MUSIC_PATH")
+        -- Check for music path from command line arguments or environment
+        local music_path = _G.RHYTHM_MUSIC_PATH or os.getenv("RHYTHM_MUSIC_PATH")
         local loaded = false
 
         if music_path then
-            print("Loading music from launcher:", music_path)
+            print("Loading music from command line/launcher:", music_path)
 
             local is_directory = false
             local handle = io.popen('test -d "' .. music_path .. '" && echo "directory" || echo "file"')

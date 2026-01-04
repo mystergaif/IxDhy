@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Rhythm GUI Launcher
+# Usage: ./rhythm-gui [music_directory_or_file]
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+GUI_DIR="$SCRIPT_DIR/gui"
+
+# Check if LÖVE2D is installed
+if ! command -v love &> /dev/null; then
+    echo "❌ LÖVE2D not found. Please install love2d first:"
+    echo "   sudo apt install love  # Ubuntu/Debian"
+    echo "   sudo pacman -S love    # Arch"
+    echo "   sudo dnf install love  # Fedora"
+    exit 1
+fi
+
+# Check if GUI directory exists
+if [ ! -d "$GUI_DIR" ]; then
+    echo "❌ GUI directory not found: $GUI_DIR"
+    echo "Make sure you're running this from the Rhythm project root"
+    exit 1
+fi
+
+# Print usage if help requested
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    echo "🎵 Rhythm Music Player GUI"
+    echo ""
+    echo "Usage:"
+    echo "  $0                           # Launch with default music directory"
+    echo "  $0 /path/to/music           # Launch with specific directory"
+    echo "  $0 ~/Music/song.mp3         # Launch with specific file"
+    echo ""
+    echo "Examples:"
+    echo "  $0 ~/Music"
+    echo "  $0 ~/Music/little_nightmares_soundtrack/"
+    echo "  $0 /home/user/Downloads/song.mp3"
+    echo ""
+    echo "Controls:"
+    echo "  Space    - Play/Pause"
+    echo "  ←/→      - Previous/Next track"
+    echo "  ↑/↓      - Volume control"
+    echo "  F7       - Debug theme colors"
+    echo "  Escape   - Exit"
+    exit 0
+fi
+
+echo "🎵 Starting Rhythm GUI..."
+
+# Change to GUI directory
+cd "$GUI_DIR"
+
+# Launch with or without music path
+if [ -n "$1" ]; then
+    # Convert relative path to absolute
+    if [[ "$1" != /* ]] && [[ "$1" != ~* ]]; then
+        MUSIC_PATH="$(cd "$SCRIPT_DIR" && realpath "$1" 2>/dev/null || echo "$SCRIPT_DIR/$1")"
+    else
+        MUSIC_PATH="$1"
+    fi
+    
+    # Expand ~ to home directory
+    if [[ "$MUSIC_PATH" == ~* ]]; then
+        MUSIC_PATH="${MUSIC_PATH/#\~/$HOME}"
+    fi
+    
+    echo "🎶 Music path: $MUSIC_PATH"
+    
+    # Check if path exists
+    if [ ! -e "$MUSIC_PATH" ]; then
+        echo "⚠️  Warning: Path does not exist: $MUSIC_PATH"
+        echo "Continuing anyway - you can drag & drop files into the GUI"
+    fi
+    
+    love . "$MUSIC_PATH"
+else
+    echo "🎶 Using default music directories"
+    love .
+fi

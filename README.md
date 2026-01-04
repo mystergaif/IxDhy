@@ -28,7 +28,7 @@
 - ⚡ **High Performance** - Native C core with optimized audio processing
 - 🎨 **Modern UI** - Clean, responsive interface built with LÖVE2D
 - 🎛️ **Intuitive Controls** - Keyboard shortcuts and mouse interaction
-- 🎨 **Theme Integration** - Automatic color sync with Hyprland, Wallust, and Pywal
+- 🎨 **Theme Integration** - Automatic color sync with Hyprland, Wallust, and Pywal (by myster_gaif)
 
 ## 🖥️ System Requirements
 
@@ -236,6 +236,9 @@ sudo make install
 # From the project root directory
 love gui
 
+# With specific music directory (new feature)
+./rhythm-gui ~/Music/little_nightmares_soundtrack/
+
 # Alternative: if you're in the gui directory
 cd gui
 love .
@@ -249,6 +252,7 @@ love .
 - 🎛️ **Interactive Controls** - Click-to-seek progress bar, volume slider
 - 🔀 **Playback Modes** - Shuffle and repeat controls
 - 📱 **Responsive Design** - Adapts to different window sizes
+- 🌈 **Theme Sync** - Automatic color integration with your desktop theme (myster_gaif)
 
 **GUI Controls:**
 - **Mouse** - Click buttons, drag volume slider, seek in progress bar
@@ -315,13 +319,13 @@ cd gui && love .
 # For live development with file watching
 love gui --console
 
-# Test theme integration
+# Test theme integration (myster_gaif's contribution)
 # 1. Copy example colors: cp gui/examples/test-colors.conf ~/.config/hypr/colors.conf
 # 2. Launch Rhythm GUI: love gui
 # 3. Press F7 to see debug info
 # 4. Press F5 to reload theme or F6 to toggle themes
 
-# Test theme detection without GUI
+# Test theme detection without GUI (myster_gaif's tools)
 cd gui && lua test_theme.lua
 ```
 
@@ -388,6 +392,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 - 🔧 Performance optimizations
 - 📱 UI/UX improvements
 - 🧪 Test coverage expansion
+- 🌈 Theme system enhancements (following myster_gaif's integration pattern)
 
 ## 📝 License
 
